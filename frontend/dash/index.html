@@ -47,7 +47,9 @@
         </div>
         <div class="col text-center">
           <h3 class="display-6">Kamery</h3>
-          <button type="button" class="btn btn-primary">Restartovat</button>
+          <button id="kamery" type="button" class="btn btn-primary">
+            Restartovat
+          </button>
         </div>
       </div>
     </div>
@@ -72,22 +74,17 @@
         return res;
       }
 
-      use("test", "idk").then((data, sucess, jqXHR) => {
-        console.log(data, jqXHR.status);
-      });
-
       $("#tiskarnaOn").click(() => tiskarna(1));
       $("#tiskarnaOff").click(() => tiskarna(0));
-
-      function tiskarna(val) {
-        use("setPrinter", val).then((data, sucess, jqXHR) => {
+      $("#kamery").click(() => {
+        use("restartWebcamDaemon", true).then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
             alertos(5000, "success", data, 1000);
           } else if (jqXHR.status == 201) {
             alertos(5000, "danger", data, 1000);
           }
         });
-      }
+      });
 
       function alertos(time, type, text, fadeouttime) {
         var div = document.createElement("div");

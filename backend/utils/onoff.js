@@ -6,7 +6,6 @@ module.exports = {
   setPrinter: (val) => {
     try {
       printerIO.writeSync(Number(val));
-      console.log(val);
       return true;
     } catch (error) {
       console.error(error);

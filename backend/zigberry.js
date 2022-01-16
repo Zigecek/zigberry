@@ -56,7 +56,7 @@ app.post("/login", async (req, res) => {
         }
       }
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   }
 });
@@ -69,12 +69,7 @@ app.get("/logout", function (req, res) {
 
 app.post("/use", auth, (req, res) => {
   var { method, value } = req.body;
-  console.log(req.body);
   switch (method) {
-    case "test":
-      console.log("test");
-      res.status(201).send("test spatny.");
-      break;
     case "setPrinter":
       if (value == 0 || value == 1) {
         const result = foo.setPrinter(value);

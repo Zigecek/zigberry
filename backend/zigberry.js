@@ -10,7 +10,7 @@ const { createServer } = require("http");
 const serveStatic = require("serve-static");
 const User = require("./models/user");
 const bodyParser = require("body-parser");
-//const foo = require("./utils/onoff");
+const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 
 const port = 3388;

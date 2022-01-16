@@ -117,4 +117,4 @@ app.get("/", auth, (req, res, next) => {
 });
 app.use(serveStatic("./frontend/"));
 
-console.log("Běžím na ::" + port);
+console.log("Zigberry - " + port);

@@ -115,6 +115,7 @@ app.get("/dash", auth);
 app.get("/", auth, (req, res, next) => {
   res.redirect("/dash");
 });
+
 app.use(serveStatic("./frontend/"));
 
 console.log("Zigberry - " + port);

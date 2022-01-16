@@ -34,6 +34,10 @@ app.use(
     secret: "a1a56g4a56g4as21va23sg153as4g",
     resave: true,
     saveUninitialized: true,
+    cookie: {
+      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
+    },
+    store: store,
   })
 );
 

@@ -88,7 +88,7 @@ app.post("/use", auth, (req, res) => {
     case "getPrinter":
       const result = foo.getPrinter();
       if (result != "err") {
-        res.status(200).send(result);
+        res.status(200).send(result.toString());
       } else {
         res.status(201).send("Došlo k chybě");
       }

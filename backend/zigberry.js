@@ -119,9 +119,9 @@ app.post("/use", auth, (req, res) => {
       if (value == true) {
         exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
           if (error || errout) {
-            res.status(201).send("Při restartu kamer došlo k chybě.");
+            res.status(201).send("Při restartu USB došlo k chybě.");
           } else if (out) {
-            res.status(200).send("Kamery byly úspěšně restartovány.");
+            res.status(200).send("USB zařízení se úspěšně aktualizovala.");
           } else {
             res.status(201).send("Spojení vypršelo.");
           }

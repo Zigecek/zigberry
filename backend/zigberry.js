@@ -83,6 +83,7 @@ app.get("/logout", function (req, res) {
 
 app.post("/use", auth, (req, res) => {
   var { method, value } = req.body;
+  console.log(req.body);
   switch (method) {
     case "setPrinter":
       if (value == 0 || value == 1) {

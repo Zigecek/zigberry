@@ -15,5 +15,5 @@ module.exports = {
 };
 
 process.on("SIGINT", (_) => {
-  out.unexport();
+  printerIO.unexport();
 });

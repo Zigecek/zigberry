@@ -20,12 +20,12 @@
         <div class="col text-center">
           <h3 class="display-6">Tiskárna</h3>
           <div class="row justify-content-center">
-            <div class="col-3 align-middle my-auto">
+            <div class="col-2 align-middle my-auto">
               <div class="d-flex justify-content-center">
                 <p class="fs-4">Stav:</p>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <div class="list-group" id="list-tab" role="tablist">
                 <a
                   class="m-0 list-group-item list-group-item-action text-center"
@@ -51,6 +51,12 @@
             Restartovat
           </button>
         </div>
+        <div class="col text-center">
+          <h3 class="display-6">USB zařízení</h3>
+          <button id="usbporty" type="button" class="btn btn-primary">
+            Aktualizovat
+          </button>
+        </div>
       </div>
     </div>
 
@@ -66,6 +72,9 @@
         .forEach(function (item) {
           queryDict[item.split("=")[0]] = item.split("=")[1];
         });
+        if (queryDict.alert == "login") {
+          alertos(10000, "success", "Přihlášeno!", 1000);
+        }
       function use(method, value) {
         var res = $.post("/use", {
           method,
@@ -86,11 +95,23 @@
         });
       });
 
-      function tiskarna(val) {
-        use("setPrinter", val).then((data, sucess, jqXHR) => {
+      $("#usbporty").click(() => {
+        use("restartUSB", true).then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
             alertos(5000, "success", data, 1000);
           } else if (jqXHR.status == 201) {
+            alertos(5000, "danger", data, 1000);
+          }
+        });
+      });
+
+      function tiskarna(val) {
+        use("setPrinter", val).then((data, sucess, jqXHR) => {
+          if (jqXHR.status == 200) {
+            $("#tiskarnaOn").addClass("active");
+            alertos(5000, "success", data, 1000);
+          } else if (jqXHR.status == 201) {
+            $("#tiskarnaOff").addClass("active");
             alertos(5000, "danger", data, 1000);
           }
         });
@@ -118,7 +139,6 @@
           }, 0.25 * fadeouttime);
         }, time);
       }
-      alertos(5000, "success", "asfasfasf asfas", 1000);
     </script>
   </body>
 </html>

@@ -5,7 +5,7 @@ const printerIO = new Gpio(22, "out");
 module.exports = {
   setPrinter: (val) => {
     try {
-      printerIO.writeSync(val);
+      printerIO.writeSync(Number(val));
       console.log(val);
       return true;
     } catch (error) {

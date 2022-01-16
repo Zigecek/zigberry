@@ -85,7 +85,7 @@ app.post("/use", auth, (req, res) => {
   var { method, value } = req.body;
   console.log(req.body);
   switch (method) {
-    case "getprinter":
+    case "getPrinter":
       const result = foo.getPrinter();
       if (result != "err") {
         res.status(200).send(result);

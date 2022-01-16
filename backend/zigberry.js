@@ -69,6 +69,7 @@ app.get("/logout", function (req, res) {
 
 app.post("/use", auth, (req, res) => {
   var { method, value } = req.body;
+  console.log(req.body);
   switch (method) {
     case "test":
       console.log("test");

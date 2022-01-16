@@ -10,14 +10,24 @@ const { createServer } = require("http");
 const serveStatic = require("serve-static");
 const User = require("./models/user");
 const bodyParser = require("body-parser");
-const foo = require("./utils/onoff");
+//const foo = require("./utils/onoff");
 const { exec } = require("child_process");
+var MongoDBStore = require("connect-mongodb-session")(session);
+
+var store = new MongoDBStore({
+  uri: process.env.MONGOOSE_KEY,
+  collection: "sessions",
+});
 
 const port = 3388;
 const httpServer = createServer(app);
 httpServer.listen(port);
 
 app.use(bodyParser.urlencoded({ extended: true }));
+
+store.on("error", function (error) {
+  console.log(error);
+});
 
 app.use(
   session({

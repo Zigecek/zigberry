@@ -86,6 +86,16 @@
         });
       });
 
+      function tiskarna(val) {
+        use("setPrinter", val).then((data, sucess, jqXHR) => {
+          if (jqXHR.status == 200) {
+            alertos(5000, "success", data, 1000);
+          } else if (jqXHR.status == 201) {
+            alertos(5000, "danger", data, 1000);
+          }
+        });
+      }
+
       function alertos(time, type, text, fadeouttime) {
         var div = document.createElement("div");
         var el = $(div);

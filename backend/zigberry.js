@@ -118,6 +118,7 @@ app.post("/use", auth, (req, res) => {
       exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
         if (error || errout) {
           console.error(error, errout);
+          console.log(out);
           res.status(201).send("Při restartu USB došlo k chybě.");
         } else if (out) {
           res.status(200).send("USB zařízení se úspěšně aktualizovala.");

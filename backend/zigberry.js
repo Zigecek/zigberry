@@ -117,6 +117,7 @@ app.post("/use", auth, (req, res) => {
       }
       break;
     case "restartUSB":
+      console.log("asfasfs");
       if (value == true) {
         exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
           if (error || errout) {

@@ -72,9 +72,9 @@
         .forEach(function (item) {
           queryDict[item.split("=")[0]] = item.split("=")[1];
         });
-        if (queryDict.alert == "login") {
-          alertos(10000, "success", "Přihlášeno!", 1000);
-        }
+      if (queryDict.alert == "login") {
+        alertos(10000, "success", "Přihlášeno!", 1000);
+      }
       function use(method, value) {
         var res = $.post("/use", {
           method,

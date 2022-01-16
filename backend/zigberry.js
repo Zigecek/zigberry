@@ -10,7 +10,7 @@ const { createServer } = require("http");
 const serveStatic = require("serve-static");
 const User = require("./models/user");
 const bodyParser = require("body-parser");
-//const foo = require("./utils/onoff");
+const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
 
@@ -104,31 +104,27 @@ app.post("/use", auth, (req, res) => {
       }
       break;
     case "restartWebcamDaemon":
-      if (value == true) {
-        exec("sudo systemctl restart webcamd", (error, out, errout) => {
-          if (error || errout) {
-            res.status(201).send("Při restartu kamer došlo k chybě.");
-          } else if (out) {
-            res.status(200).send("Kamery byly úspěšně restartovány.");
-          } else {
-            res.status(201).send("Spojení vypršelo.");
-          }
-        });
-      }
+      exec("sudo systemctl restart webcamd", (error, out, errout) => {
+        if (error || errout) {
+          res.status(201).send("Při restartu kamer došlo k chybě.");
+        } else if (out) {
+          res.status(200).send("Kamery byly úspěšně restartovány.");
+        } else {
+          res.status(201).send("Spojení vypršelo.");
+        }
+      });
       break;
     case "restartUSB":
-      console.log("asfasfs");
-      if (value == true) {
-        exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
-          if (error || errout) {
-            res.status(201).send("Při restartu USB došlo k chybě.");
-          } else if (out) {
-            res.status(200).send("USB zařízení se úspěšně aktualizovala.");
-          } else {
-            res.status(201).send("Spojení vypršelo.");
-          }
-        });
-      }
+      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
+        if (error || errout) {
+          console.error(error, errout);
+          res.status(201).send("Při restartu USB došlo k chybě.");
+        } else if (out) {
+          res.status(200).send("USB zařízení se úspěšně aktualizovala.");
+        } else {
+          res.status(201).send("Spojení vypršelo.");
+        }
+      });
       break;
     default:
       break;

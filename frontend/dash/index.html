@@ -139,6 +139,15 @@
           }, 0.25 * fadeouttime);
         }, time);
       }
+      use("getPrinter", "").then((data, sucess, jqXHR) => {
+        if (jqXHR.status == 200) {
+          if (data == 0) {
+            $("#tiskarnaOff").addClass("active");
+          } else if (data == 1) {
+            $("#tiskarnaOn").addClass("active");
+          }
+        }
+      });
     </script>
   </body>
 </html>

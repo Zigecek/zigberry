@@ -85,6 +85,14 @@ app.post("/use", auth, (req, res) => {
   var { method, value } = req.body;
   console.log(req.body);
   switch (method) {
+    case "getprinter":
+      const result = foo.getPrinter();
+      if (result != "err") {
+        res.status(200).send(result);
+      } else {
+        res.status(201).send("Došlo k chybě");
+      }
+      break;
     case "setPrinter":
       if (value == 0 || value == 1) {
         const result = foo.setPrinter(value);
@@ -104,11 +112,11 @@ app.post("/use", auth, (req, res) => {
       }
       break;
     case "restartWebcamDaemon":
-      exec("sudo systemctl restart webcamd", (error, out, errout) => {
-        if (error || errout) {
-          res.status(201).send("Při restartu kamer došlo k chybě.");
-        } else if (out) {
+      exec("sudo /home/pi/cc/webcamd.sh", (error, out, errout) => {
+        if (out) {
           res.status(200).send("Kamery byly úspěšně restartovány.");
+        } else if (error || errout) {
+          res.status(201).send("Při restartu kamer došlo k chybě.");
         } else {
           res.status(201).send("Spojení vypršelo.");
         }

@@ -12,6 +12,15 @@ module.exports = {
       return false;
     }
   },
+  getPrinter: () => {
+    try {
+      var val = printerIO.readSync();
+      return val;
+    } catch (error) {
+      console.error(error);
+      return "err";
+    }
+  },
 };
 
 process.on("SIGINT", (_) => {

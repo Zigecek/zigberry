@@ -60,9 +60,10 @@
               password: $("#password").val().hashCode(),
             },
             function (data, status, jqXHR) {
-              $("#status").append("status: " + status + ", data: " + data);
-            },
-            "json"
+              if (status == "success") {
+                window.location.href = data;
+              }
+            }
           );
         });
     </script>

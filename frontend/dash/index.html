@@ -76,12 +76,8 @@
         console.log(data, jqXHR.status);
       });
 
-      $("#tiskarnaOn")
-        .get()
-        .addEventListener("click", () => tiskarna(1));
-      $("#tiskarnaOff")
-        .get()
-        .addEventListener("click", () => tiskarna(0));
+      $("#tiskarnaOn").click(() => tiskarna(1));
+      $("#tiskarnaOff").click(() => tiskarna(0));
 
       function tiskarna(val) {
         use("setPrinter", val).then((data, sucess, jqXHR) => {

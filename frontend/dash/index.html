@@ -83,8 +83,16 @@
         return res;
       }
 
-      $("#tiskarnaOn").click(() => tiskarna(1));
-      $("#tiskarnaOff").click(() => tiskarna(0));
+      $("#tiskarnaOn").click(() => {
+        if (!$("#tiskarnaOn").hasClass("active")) {
+          tiskarna(1);
+        }
+      });
+      $("#tiskarnaOff").click(() => {
+        if (!$("#tiskarnaOff").hasClass("active")) {
+          tiskarna(0);
+        }
+      });
       $("#kamery").click(() => {
         use("restartWebcamDaemon", "").then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
@@ -109,9 +117,11 @@
         use("setPrinter", val).then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
             $("#tiskarnaOn").addClass("active");
+            $("#tiskarnaOff").removeClass("active");
             alertos(5000, "success", data, 1000);
           } else if (jqXHR.status == 201) {
             $("#tiskarnaOff").addClass("active");
+            $("#tiskarnaOn").removeClass("active");
             alertos(5000, "danger", data, 1000);
           }
         });
@@ -143,8 +153,10 @@
         if (jqXHR.status == 200) {
           if (Number(data) == 0) {
             $("#tiskarnaOff").addClass("active");
+            $("#tiskarnaOn").removeClass("active");
           } else if (Number(data) == 1) {
             $("#tiskarnaOn").addClass("active");
+            $("#tiskarnaOff").removeClass("active");
           }
         }
       });

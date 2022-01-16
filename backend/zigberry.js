@@ -116,6 +116,7 @@ app.post("/use", auth, (req, res) => {
         if (out) {
           res.status(200).send("Kamery byly úspěšně restartovány.");
         } else if (error || errout) {
+          console.error(error, errout);
           res.status(201).send("Při restartu kamer došlo k chybě.");
         } else {
           res.status(201).send("Spojení vypršelo.");

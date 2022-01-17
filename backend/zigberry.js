@@ -64,7 +64,7 @@ app.post("/login", async (req, res) => {
       } else {
         if (user.password == password) {
           req.session.user = username;
-          return res.status(200).send("/dash");
+          return res.status(200).send("/dash?alert=login");
         } else {
           return res.status(410).send("Špatné heslo");
         }

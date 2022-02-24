@@ -126,9 +126,9 @@ app.post("/use", auth, function useFn(req, res) {
       });
       break;
     case "restartUSB":
-      exec("sudo /home/pi/cc/restart.sh", async (error, out, errout) => {
+      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
         if (out) {
-          setTimeout(() => {
+          setTimeout(async () => {
             const conRes = await octo.connect();
 
             res.send(

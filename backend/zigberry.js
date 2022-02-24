@@ -82,7 +82,7 @@ app.get("/logout", function (req, res) {
   res.redirect("/prihlaseni");
 });
 
-app.post("/use", auth, async (req, res) => {
+app.post("/use", auth, function useFn(req, res) {
   var { method, value } = req.body;
   console.log(req.body);
   switch (method) {
@@ -97,17 +97,10 @@ app.post("/use", auth, async (req, res) => {
     case "setPrinter":
       if (value == 0 || value == 1) {
         const result = foo.setPrinter(value);
-        const res = await octo.connect();
 
         if (result == true) {
           if (value == 1) {
-            res
-              .status(200)
-              .send(
-                "Tiskárna byla úspěšně zapnuta. (" + res?.status
-                  ? res.status
-                  : res + ")"
-              );
+            res.status(200).send("Tiskárna byla úspěšně zapnuta.");
           } else {
             res.status(200).send("Tiskárna byla úspěšně vypnuta.");
           }
@@ -133,9 +126,17 @@ app.post("/use", auth, async (req, res) => {
       });
       break;
     case "restartUSB":
-      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
+      exec("sudo /home/pi/cc/restart.sh", async (error, out, errout) => {
         if (out) {
-          res.status(200).send("USB zařízení se úspěšně aktualizovala.");
+          const conRes = await octo.connect();
+
+          res
+            .status(200)
+            .send(
+              "USB zařízení se úspěšně aktualizovala.(" + conRes?.status
+                ? conRes.status
+                : res + ")"
+            );
         } else if (error || errout) {
           console.error(error, errout);
           res.status(201).send("Při restartu USB došlo k chybě.");

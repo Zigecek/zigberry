@@ -18,7 +18,7 @@ module.exports = {
 };
 
 async function api(path, type, data) {
-  axios({
+  var returning = axios({
     url: path,
     baseURL: "https://octo.kozohorsky.xyz/",
     method: type,
@@ -35,4 +35,5 @@ async function api(path, type, data) {
     .catch((err) => {
       return err.response;
     });
+  return returning;
 }

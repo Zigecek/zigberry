@@ -131,9 +131,9 @@ app.post("/use", auth, function useFn(req, res) {
           const conRes = await octo.connect();
 
           res.send(
-            "USB zařízení se úspěšně aktualizovala.(" + conRes?.status
-              ? conRes.status
-              : res + ")"
+            `USB zařízení se úspěšně aktualizovala. (${
+              conRes?.status ? conRes.status : res
+            })`
           );
         } else if (error || errout) {
           console.error(error, errout);

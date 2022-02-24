@@ -118,8 +118,6 @@
                 }
 
                 setTimeout(() => {
-
-
                   use("restartUSB", "").then((data, sucess, jqXHR) => {
                     if (jqXHR.status == 200) {
                       alertos(5000, "success", data, 1000);
@@ -127,10 +125,7 @@
                       alertos(5000, "danger", data, 1000);
                     }
 
-
                     setTimeout(() => {
-
-
                         use("restartWebcamDaemon", "").then((data, sucess, jqXHR) => {
                           if (jqXHR.status == 200) {
                             alertos(5000, "success", data, 1000);
@@ -138,7 +133,7 @@
                             alertos(5000, "danger", data, 1000);
                           }
                       }, 1000);
-                    }, 3000);
+                    }, 5000);
                   });
                 });
               });

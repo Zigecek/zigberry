@@ -128,13 +128,15 @@ app.post("/use", auth, function useFn(req, res) {
     case "restartUSB":
       exec("sudo /home/pi/cc/restart.sh", async (error, out, errout) => {
         if (out) {
-          const conRes = await octo.connect();
+          setTimeout(() => {
+            const conRes = await octo.connect();
 
-          res.send(
-            `USB zařízení se úspěšně aktualizovala. (${
-              conRes?.status ? conRes.status : res
-            })`
-          );
+            res.send(
+              `USB zařízení se úspěšně aktualizovala. (${
+                conRes?.status ? conRes.status : res
+              })`
+            );
+          }, 3000);
         } else if (error || errout) {
           console.error(error, errout);
           res.status(201).send("Při restartu USB došlo k chybě.");

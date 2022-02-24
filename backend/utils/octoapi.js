@@ -4,7 +4,7 @@ const axios = require("axios");
 module.exports = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
-    if (current.current.toLowerCase() == "offline") {
+    if (!current.data.current.port) {
       var res = await api("/api/connection", "POST", {
         command: "connect",
       });

@@ -130,13 +130,11 @@ app.post("/use", auth, function useFn(req, res) {
         if (out) {
           const conRes = await octo.connect();
 
-          res
-            .status(200)
-            .send(
-              "USB zařízení se úspěšně aktualizovala.(" + conRes?.status
-                ? conRes.status
-                : res + ")"
-            );
+          res.send(
+            "USB zařízení se úspěšně aktualizovala.(" + conRes?.status
+              ? conRes.status
+              : res + ")"
+          );
         } else if (error || errout) {
           console.error(error, errout);
           res.status(201).send("Při restartu USB došlo k chybě.");

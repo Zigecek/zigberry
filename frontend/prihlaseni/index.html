@@ -77,14 +77,7 @@
       function alertos(time, type, text, fadeouttime) {
         var div = document.createElement("div");
         var el = $(div);
-        el.addClass([
-          "position-fixed",
-          "end-0",
-          "opacity-75",
-          "alert",
-          `alert-${type}`,
-          "m-2",
-        ]);
+        el.addClass(["opacity-75", "alert", `alert-${type}`, "m-2"]);
         el.attr("role", "alert");
         el.text(text);
         el.appendTo("#alerts");

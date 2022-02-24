@@ -11,17 +11,25 @@
     />
   </head>
 
-  <>
-
   <body>
-    <form id="sendForm" action="/login" method="post">
-      <input type="text" name="username" id="username" />
-      <input type="password" name="password" id="password" />
-      <button type="submit" id="submit">Přihlásit</button>
-    </form>
-    <p id="status"></p>
-
-    <>
+    <div id="alerts"></div>
+    <div class="row justify-content-center">
+      <div class="col d-flex">
+        <form class="p-4 border w-50" id="sendForm">
+          <div class="mb-3">
+            <label for="username" class="form-label">Přihlašovací jméno</label>
+            <input type="text" class="form-control" id="username" />
+          </div>
+          <div class="mb-3">
+            <label for="password" class="form-label">Heslo</label>
+            <input type="password" class="form-control" id="password" />
+          </div>
+          <button type="submit" class="btn btn-primary" id="submit">
+            Přihlásit
+          </button>
+        </form>
+      </div>
+    </div>
 
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script
@@ -34,8 +42,6 @@
       integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
       crossorigin="anonymous"
     ></script>
-
-    <>
 
     <script>
       String.prototype.hashCode = function () {
@@ -62,10 +68,34 @@
             function (data, status, jqXHR) {
               if (status == "success") {
                 window.location.href = data;
+              } else {
               }
             }
           );
         });
+
+      function alertos(time, type, text, fadeouttime) {
+        var div = document.createElement("div");
+        var el = $(div);
+        el.addClass([
+          "position-fixed",
+          "end-0",
+          "opacity-75",
+          "alert",
+          `alert-${type}`,
+          "m-2",
+        ]);
+        el.attr("role", "alert");
+        el.text(text);
+        el.appendTo("#alerts");
+
+        setTimeout(() => {
+          el.fadeOut(0.75 * fadeouttime);
+          setTimeout(() => {
+            el.removeClass("opacity-75");
+          }, 0.25 * fadeouttime);
+        }, time);
+      }
     </script>
   </body>
 </html>

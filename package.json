@@ -14,15 +14,17 @@
   },
   "author": "Jan Kozohorský (https://kozohorsky.xyz/)",
   "dependencies": {
+    "axios": "^0.26.0",
     "body-parser": "^1.19.1",
     "child_process": "^1.0.2",
     "connect-mongodb-session": "^3.1.1",
-    "dotenv": "^12.0.3",
+    "dotenv": "^12.0.4",
     "express": "^4.17.2",
     "express-session": "^1.17.2",
     "find-config": "^1.0.0",
     "http": "^0.0.1-security",
     "mongoose": "^5.13.7",
+    "onoff": "^6.0.3",
     "serve-static": "^1.14.2"
   }
 }

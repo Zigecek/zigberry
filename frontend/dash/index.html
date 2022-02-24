@@ -15,17 +15,17 @@
     <div id="alerts"></div>
 
     <div class="containter">
-      <h1 class="display-3 text-center">Ovládací panel</h1>
+      <h1 class="display-3 text-center m-3">Ovládací panel</h1>
       <div class="m-0 row">
         <div class="col text-center">
           <h3 class="display-6">Tiskárna</h3>
           <div class="row justify-content-center">
-            <div class="col-3 align-middle my-auto">
+            <div class="col-2 align-middle my-auto">
               <div class="d-flex justify-content-center">
                 <p class="fs-4">Stav:</p>
               </div>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <div class="list-group" id="list-tab" role="tablist">
                 <a
                   class="m-0 list-group-item list-group-item-action text-center"
@@ -47,8 +47,14 @@
         </div>
         <div class="col text-center">
           <h3 class="display-6">Kamery</h3>
-          <button id="kamery" type="button" class="btn btn-primary">
+          <button id="kamery" type="button" class="btn btn-primary m-2">
             Restartovat
+          </button>
+        </div>
+        <div class="col text-center">
+          <h3 class="display-6">USB zařízení</h3>
+          <button id="usbporty" type="button" class="btn btn-primary m-2"">
+            Aktualizovat
           </button>
         </div>
       </div>
@@ -66,6 +72,9 @@
         .forEach(function (item) {
           queryDict[item.split("=")[0]] = item.split("=")[1];
         });
+      if (queryDict.alert == "login") {
+        alertos(10000, "success", "Přihlášeno!", 1000);
+      }
       function use(method, value) {
         var res = $.post("/use", {
           method,
@@ -74,10 +83,28 @@
         return res;
       }
 
-      $("#tiskarnaOn").click(() => tiskarna(1));
-      $("#tiskarnaOff").click(() => tiskarna(0));
+      $("#tiskarnaOn").click(() => {
+        if (!$("#tiskarnaOn").hasClass("active")) {
+          tiskarna(1);
+        }
+      });
+      $("#tiskarnaOff").click(() => {
+        if (!$("#tiskarnaOff").hasClass("active")) {
+          tiskarna(0);
+        }
+      });
       $("#kamery").click(() => {
-        use("restartWebcamDaemon", true).then((data, sucess, jqXHR) => {
+        use("restartWebcamDaemon", "").then((data, sucess, jqXHR) => {
+          if (jqXHR.status == 200) {
+            alertos(5000, "success", data, 1000);
+          } else if (jqXHR.status == 201) {
+            alertos(5000, "danger", data, 1000);
+          }
+        });
+      });
+
+      $("#usbporty").click(() => {
+        use("restartUSB", "").then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
             alertos(5000, "success", data, 1000);
           } else if (jqXHR.status == 201) {
@@ -89,8 +116,18 @@
       function tiskarna(val) {
         use("setPrinter", val).then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
-            alertos(5000, "success", data, 1000);
+            if (val == 1){
+              $("#tiskarnaOn").addClass("active");
+              $("#tiskarnaOff").removeClass("active");
+              alertos(5000, "success", data, 1000);
+            } else if (val == 0) {
+              $("#tiskarnaOff").addClass("active");
+              $("#tiskarnaOn").removeClass("active");
+              alertos(5000, "success", data, 1000);
+            }
           } else if (jqXHR.status == 201) {
+            $("#tiskarnaOff").addClass("active");
+            $("#tiskarnaOn").removeClass("active");
             alertos(5000, "danger", data, 1000);
           }
         });
@@ -100,7 +137,6 @@
         var div = document.createElement("div");
         var el = $(div);
         el.addClass([
-          "position-fixed",
           "end-0",
           "opacity-75",
           "alert",
@@ -118,7 +154,17 @@
           }, 0.25 * fadeouttime);
         }, time);
       }
-      alertos(5000, "success", "asfasfasf asfas", 1000);
+      use("getPrinter", "").then((data, sucess, jqXHR) => {
+        if (jqXHR.status == 200) {
+          if (Number(data) == 0) {
+            $("#tiskarnaOff").addClass("active");
+            $("#tiskarnaOn").removeClass("active");
+          } else if (Number(data) == 1) {
+            $("#tiskarnaOn").addClass("active");
+            $("#tiskarnaOff").removeClass("active");
+          }
+        }
+      });
     </script>
   </body>
 </html>

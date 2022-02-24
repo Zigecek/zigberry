@@ -13,6 +13,7 @@ const bodyParser = require("body-parser");
 const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
+const octo = require("./utils/octoapi");
 
 var store = new MongoDBStore({
   uri: process.env.MONGOOSE_KEY,
@@ -64,7 +65,7 @@ app.post("/login", async (req, res) => {
       } else {
         if (user.password == password) {
           req.session.user = username;
-          return res.status(200).send("/dash");
+          return res.status(200).send("/dash?alert=login");
         } else {
           return res.status(410).send("Špatné heslo");
         }
@@ -81,15 +82,32 @@ app.get("/logout", function (req, res) {
   res.redirect("/prihlaseni");
 });
 
-app.post("/use", auth, (req, res) => {
+app.post("/use", auth, async (req, res) => {
   var { method, value } = req.body;
+  console.log(req.body);
   switch (method) {
+    case "getPrinter":
+      const result = foo.getPrinter();
+      if (result != "err") {
+        res.status(200).send(result.toString());
+      } else {
+        res.status(201).send("Došlo k chybě");
+      }
+      break;
     case "setPrinter":
       if (value == 0 || value == 1) {
         const result = foo.setPrinter(value);
+        const res = await octo.connect();
+
         if (result == true) {
           if (value == 1) {
-            res.status(200).send("Tiskárna byla úspěšně zapnuta.");
+            res
+              .status(200)
+              .send(
+                "Tiskárna byla úspěšně zapnuta. (" + res?.status
+                  ? res.status
+                  : res + ")"
+              );
           } else {
             res.status(200).send("Tiskárna byla úspěšně vypnuta.");
           }
@@ -103,17 +121,28 @@ app.post("/use", auth, (req, res) => {
       }
       break;
     case "restartWebcamDaemon":
-      if (value == true) {
-        exec("sudo systemctl restart webcamd", (error, out, errout) => {
-          if (error || errout) {
-            res.status(201).send("Při restartu kamer došlo k chybě.");
-          } else if (out) {
-            res.status(200).send("Kamery byly úspěšně restartovány.");
-          } else {
-            res.status(201).send("Spojení vypršelo.");
-          }
-        });
-      }
+      exec("sudo /home/pi/cc/webcamd.sh", (error, out, errout) => {
+        if (out) {
+          res.status(200).send("Kamery byly úspěšně restartovány.");
+        } else if (error || errout) {
+          console.error(error, errout);
+          res.status(201).send("Při restartu kamer došlo k chybě.");
+        } else {
+          res.status(201).send("Spojení vypršelo.");
+        }
+      });
+      break;
+    case "restartUSB":
+      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
+        if (out) {
+          res.status(200).send("USB zařízení se úspěšně aktualizovala.");
+        } else if (error || errout) {
+          console.error(error, errout);
+          res.status(201).send("Při restartu USB došlo k chybě.");
+        } else {
+          res.status(201).send("Spojení vypršelo.");
+        }
+      });
       break;
     default:
       break;

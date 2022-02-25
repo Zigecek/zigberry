@@ -26,6 +26,7 @@ const port = 3388;
 const httpServer = createServer(app);
 httpServer.listen(port);
 
+app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 store.on("error", function (error) {

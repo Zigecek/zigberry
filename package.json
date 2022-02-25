@@ -27,5 +27,16 @@
     "onoff": "^6.0.3",
     "serve-static": "^1.14.2",
     "short-uuid": "latest"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": 2021
+    },
+    "env": {
+      "es2021": true
+    },
+    "rules": {
+      "require-await": 1
+    }
   }
 }

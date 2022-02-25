@@ -4,12 +4,10 @@ const axios = require("axios");
 module.exports = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
-    console.log(current.data);
     if (!current.data.current.port) {
       var res = await api("/api/connection", "POST", {
         command: "connect",
       });
-      console.log(res);
       return res;
     } else {
       return null;

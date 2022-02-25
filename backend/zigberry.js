@@ -14,6 +14,8 @@ const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
 const octo = require("./utils/octoapi");
+const short = require("short-uuid");
+var latestEUUID = "";
 
 var store = new MongoDBStore({
   uri: process.env.MONGOOSE_KEY,
@@ -81,6 +83,32 @@ app.get("/logout", function (req, res) {
   req.session.destroy();
   res.redirect("/prihlaseni");
 });
+
+app.post(
+  "/events",
+  (req, res, next) => {
+    if (req.headers.authorization == process.env.CORS_KEY) {
+      return next();
+    } else {
+      return res.sendStatus(401);
+    }
+  },
+  (req, res) => {
+    latestEUUID = short.generate();
+    
+    console.log(res.data);
+  }
+);
+
+function autoOff() {
+  const uid = short.generate();
+  latestEUUID = uid;
+
+  setTimeout(() => {
+    if (uid == latestEUUID) {
+    }
+  }, 20 * 60 * 60);
+}
 
 app.post("/use", auth, function useFn(req, res) {
   var { method, value } = req.body;

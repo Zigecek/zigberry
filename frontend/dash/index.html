@@ -117,25 +117,28 @@
                   alertos(5000, "danger", data, 1000);
                 }
 
-                setTimeout(() => {
-                  use("restartUSB", "").then((data, sucess, jqXHR) => {
-                    if (jqXHR.status == 200) {
-                      alertos(5000, "success", data, 1000);
-                    } else if (jqXHR.status == 201) {
-                      alertos(5000, "danger", data, 1000);
-                    }
+                if (val == 1) {
 
-                    setTimeout(() => {
+                  setTimeout(() => {
+                    use("restartUSB", "").then((data, sucess, jqXHR) => {
+                      if (jqXHR.status == 200) {
+                        alertos(5000, "success", data, 1000);
+                      } else if (jqXHR.status == 201) {
+                        alertos(5000, "danger", data, 1000);
+                      }
+
+                      setTimeout(() => {
                         use("restartWebcamDaemon", "").then((data, sucess, jqXHR) => {
                           if (jqXHR.status == 200) {
                             alertos(5000, "success", data, 1000);
                           } else if (jqXHR.status == 201) {
                             alertos(5000, "danger", data, 1000);
                           }
-                      }, 1000);
-                    }, 5000);
+                        }, 1000);
+                      }, 5000);
+                    });
                   });
-                });
+                }
               });
             }
 

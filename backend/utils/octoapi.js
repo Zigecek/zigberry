@@ -1,6 +1,7 @@
 const foo = require("./onoff");
 const axios = require("axios");
 const main = require("../zigberry");
+const { parseJson } = require("parse-json");
 
 module.exports = {
   connect: async () => {
@@ -16,7 +17,7 @@ module.exports = {
   },
   event: (args) => {
     args.splice(2);
-    var payload = JSON.parse(args[0]);
+    var payload = parseJson(args[0]);
     var eventName = args[1];
     console.log(eventName, args);
   },

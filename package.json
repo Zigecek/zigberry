@@ -3,8 +3,8 @@
   "version": "0.0.21",
   "main": "backend/zigberry.js",
   "scripts": {
-    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest",
-    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session",
+    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest parse-json@latest axios@latest short-uuid@latest",
+    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session parse-json axios short-uuid",
     "start": "pm2 start ./backend/zigberry.js --time",
     "start2": "node backend/zigberry.js"
   },
@@ -25,6 +25,7 @@
     "http": "^0.0.1-security",
     "mongoose": "^5.13.7",
     "onoff": "^6.0.3",
+    "parse-json": "latest",
     "serve-static": "^1.14.2",
     "short-uuid": "latest"
   },

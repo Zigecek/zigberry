@@ -100,7 +100,7 @@ const evFn = (req, res, next) => {
 app.post("/events", evFn, (req, res) => {
   latestEUUID = short.generate();
 
-  console.log(res.data);
+  console.log(res.body);
 
   res.sendStatus(204);
 });

@@ -93,7 +93,7 @@ app.post(
   "/events",
   (req, res, next) => {
     console.log(req.headers);
-    if (req.headers["Authorization"] == process.env.CORS_KEY) {
+    if (req.headers["authorization"] == process.env.CORS_KEY) {
       return next();
     } else {
       return res.sendStatus(401);

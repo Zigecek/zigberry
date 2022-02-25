@@ -89,26 +89,21 @@ app.get("/logout", function (req, res) {
   res.redirect("/prihlaseni");
 });
 
-app.post(
-  "/events",
-  (req, res, next) => {
-    console.log(req.headers);
-    console.log(req.headers["authorization"]);
-    console.log(req.headers["Authorization"]);
-    console.log(process.env.CORS_KEY);
-
-    if (req.headers["authorization"] == process.env.CORS_KEY) {
-      return next();
-    } else {
-      return res.sendStatus(401);
-    }
-  },
-  (req, res) => {
-    latestEUUID = short.generate();
-
-    console.log(res.data);
+const evFn = (req, res, next) => {
+  if (req.headers.authorization == process.env.CORS_KEY) {
+    return next();
+  } else {
+    return res.sendStatus(401);
   }
-);
+};
+
+app.post("/events", evFn, (req, res) => {
+  latestEUUID = short.generate();
+
+  console.log(res.data);
+
+  res.sendStatus(204);
+});
 
 function autoOff() {
   const uid = short.generate();

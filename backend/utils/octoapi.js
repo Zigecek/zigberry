@@ -15,6 +15,7 @@ module.exports = {
     }
   },
   event: (args) => {
+    console.log(args);
     args = args.splice(0, 2);
     console.log(args);
     var rawPL = args[0];

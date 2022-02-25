@@ -15,9 +15,11 @@ module.exports = {
     }
   },
   event: (args) => {
-    args.splice(0, 2);
+    args = args.splice(0, 2);
+    console.log(args);
     var rawPL = args[0];
     var payload = JSON.parse(rawPL);
+    console.log(payload);
     var eventName = args[1];
     console.log(eventName, payload);
   },

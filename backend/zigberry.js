@@ -44,6 +44,11 @@ app.use(
   })
 );
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Expose-Headers", "Authorization");
+  next();
+});
+
 // Authentication and Authorization Middleware
 var auth = function (req, res, next) {
   if (req.session.user) {
@@ -87,7 +92,8 @@ app.get("/logout", function (req, res) {
 app.post(
   "/events",
   (req, res, next) => {
-    if (req.headers.authorization == process.env.CORS_KEY) {
+    console.log(req.headers);
+    if (req.headers["Authorization"] == process.env.CORS_KEY) {
       return next();
     } else {
       return res.sendStatus(401);
@@ -95,7 +101,7 @@ app.post(
   },
   (req, res) => {
     latestEUUID = short.generate();
-    
+
     console.log(res.data);
   }
 );

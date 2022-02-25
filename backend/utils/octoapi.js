@@ -1,6 +1,6 @@
 const foo = require("./onoff");
 const axios = require("axios");
-const main = require('../zigberry');
+const main = require("../zigberry");
 
 module.exports = {
   connect: async () => {
@@ -15,7 +15,10 @@ module.exports = {
     }
   },
   event: (args) => {
-    console.log(args);
+    args.splice(2);
+    var payload = JSON.parse(args[0]);
+    var eventName = args[1];
+    console.log(eventName, args);
   },
 };
 

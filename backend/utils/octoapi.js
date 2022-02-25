@@ -15,13 +15,11 @@ module.exports = {
     }
   },
   event: (args) => {
-    args.splice(2);
+    args.splice(0, 2);
     var rawPL = args[0];
-    console.log(rawPL);
     var payload = JSON.parse(rawPL);
-    console.log(payload);
     var eventName = args[1];
-    console.log(eventName, args);
+    console.log(eventName, payload);
   },
 };
 

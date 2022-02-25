@@ -101,8 +101,8 @@ const evFn = (req, res, next) => {
 app.post("/events", evFn, (req, res) => {
   latestEUUID = short.generate();
 
-  console.log(req.body);
-
+  octo.event(req.body.args);
+  
   res.sendStatus(204);
 });
 
@@ -187,6 +187,13 @@ app.get("/", auth, (req, res, next) => {
   res.redirect("/dash");
 });
 
+app.get("/get")
+
 app.use(serveStatic("./frontend/"));
 
 console.log("Zigberry - " + port);
+
+
+module.exports = {
+  latestEUUID
+}

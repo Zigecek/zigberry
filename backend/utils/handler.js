@@ -1,6 +1,8 @@
 const axios = require("axios");
+const path = require("path");
+console.log(path(__dirname, "..", ".env"));
 require("dotenv").config({
-  path: "../.env",
+  path: path(__dirname, "..", ".env"),
 });
 var args = process.argv;
 args.splice(0, 2);

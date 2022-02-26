@@ -3,7 +3,7 @@ const axios = require("axios");
 const short = require("short-uuid");
 var latestEUUID = "";
 
-const octoapiFNs = {
+const octoapioctoapiFNs = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
     if (!current.data.current.port) {
@@ -26,11 +26,11 @@ const octoapiFNs = {
       case "FileSelected":
       case "TransferStarted":
       case "PrintStateChanged":
-        fns.autoOff();
+        octoapiFNs.autoOff();
         break;
 
       case "PrintStarted":
-        fns.newUUID();
+        octoapiFNs.newUUID();
         axios({
           method: "post",
           url: "/toAdmin",
@@ -43,7 +43,7 @@ const octoapiFNs = {
           },
         });
       case "PrintDone":
-        fns.autoOff();
+        octoapiFNs.autoOff();
         var image = await getImage();
         var base64 = image ? Buffer.from(image, "base64") : undefined;
         axios({
@@ -60,7 +60,7 @@ const octoapiFNs = {
           },
         });
       case "PrintFailed":
-        fns.autoOff();
+        octoapiFNs.autoOff();
         axios({
           method: "post",
           url: "/toAdmin",
@@ -108,9 +108,9 @@ const octoapiFNs = {
     latestEUUID = short.generate();
   },
 };
-module.exports = octoapiFNs;
+module.exports = octoapioctoapiFNs;
 
-fns.autoOff();
+octoapiFNs.autoOff();
 
 async function api(path, type, data) {
   var ret = axios({

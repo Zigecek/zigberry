@@ -16,9 +16,9 @@ module.exports = {
   },
   event: (args) => {
     console.log(args);
-    args = args.splice(0, 2);
-    console.log(args);
-    var rawPL = args[0];
+    var clearArgs = args.splice(0, 2);
+    console.log(clearArgs);
+    var rawPL = clearArgs[0];
     var payload = JSON.parse(rawPL);
     console.log(payload);
     var eventName = args[1];

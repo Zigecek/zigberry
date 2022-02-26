@@ -106,7 +106,7 @@ module.exports = fns;
 fns.autoOff();
 
 async function api(path, type, data) {
-  axios({
+  var ret = axios({
     url: path,
     baseURL: "https://octo.kozohorsky.xyz/",
     method: type,
@@ -123,6 +123,7 @@ async function api(path, type, data) {
     .catch((err) => {
       return err.response;
     });
+  return ret;
 }
 
 async function getImage() {

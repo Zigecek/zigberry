@@ -1,6 +1,6 @@
 {
   "name": "zigberry",
-  "version": "0.0.21",
+  "version": "0.0.3",
   "main": "backend/zigberry.js",
   "scripts": {
     "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest axios@latest short-uuid@latest",
@@ -36,8 +36,6 @@
     "env": {
       "es2021": true
     },
-    "rules": {
-      "require-await": 1
-    }
+    "rules": {}
   }
 }

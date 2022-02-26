@@ -14,8 +14,6 @@ const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
 const octo = require("./utils/octoapi");
-const short = require("short-uuid");
-var latestEUUID = "";
 
 var store = new MongoDBStore({
   uri: process.env.MONGOOSE_KEY,
@@ -99,22 +97,9 @@ const evFn = (req, res, next) => {
 };
 
 app.post("/events", evFn, (req, res) => {
-  latestEUUID = short.generate();
-
   octo.event(req.body.args);
-  
   res.sendStatus(204);
 });
-
-function autoOff() {
-  const uid = short.generate();
-  latestEUUID = uid;
-
-  setTimeout(() => {
-    if (uid == latestEUUID) {
-    }
-  }, 20 * 60 * 60);
-}
 
 app.post("/use", auth, function useFn(req, res) {
   var { method, value } = req.body;
@@ -131,6 +116,7 @@ app.post("/use", auth, function useFn(req, res) {
     case "setPrinter":
       if (value == 0 || value == 1) {
         const result = foo.setPrinter(value);
+        octo.autoOff();
 
         if (result == true) {
           if (value == 1) {
@@ -160,15 +146,17 @@ app.post("/use", auth, function useFn(req, res) {
       });
       break;
     case "restartUSB":
-      exec("sudo /home/pi/cc/restart.sh", async (error, out, errout) => {
+      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
         if (out) {
-          const conRes = await octo.connect();
+          setTimeout(async () => {
+            const conRes = await octo.connect();
 
-          res.send(
-            `USB zařízení se úspěšně aktualizovala. (${
-              conRes?.status ? conRes.status : res
-            })`
-          );
+            res.send(
+              `USB zařízení se úspěšně aktualizovala. (${
+                conRes?.status ? conRes.status : res
+              })`
+            );
+          }, 1000);
         } else if (error || errout) {
           console.error(error, errout);
           res.status(201).send("Při restartu USB došlo k chybě.");
@@ -187,13 +175,8 @@ app.get("/", auth, (req, res, next) => {
   res.redirect("/dash");
 });
 
-app.get("/get")
+app.get("/get");
 
 app.use(serveStatic("./frontend/"));
 
 console.log("Zigberry - " + port);
-
-
-module.exports = {
-  latestEUUID
-}

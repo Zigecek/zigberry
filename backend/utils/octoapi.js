@@ -123,7 +123,6 @@ async function api(path, type, data) {
     .catch((err) => {
       return err.response;
     });
-  return returning;
 }
 
 async function getImage() {

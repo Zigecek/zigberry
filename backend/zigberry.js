@@ -170,6 +170,15 @@ app.post("/use", auth, function useFn(req, res) {
   }
 });
 
+app.post("/event", (req, res) => {
+  if (req.headers.auth == process.env.CORS_KEY) {
+    octo.event(req.body.event, req.body.payload);
+    res.sendStatus(204);
+  } else {
+    res.sendStatus(401);
+  }
+});
+
 app.get("/dash", auth);
 app.get("/", auth, (req, res, next) => {
   res.redirect("/dash");

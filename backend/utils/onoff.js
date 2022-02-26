@@ -1,9 +1,8 @@
 const oof = require("onoff");
 const Gpio = oof.Gpio;
 const printerIO = new Gpio(22, "out");
-const octo = require("./octoapi");
 
-module.exports = {
+const onoffFNs = {
   setPrinter: (val) => {
     try {
       printerIO.writeSync(Number(val));
@@ -23,6 +22,8 @@ module.exports = {
     }
   },
 };
+
+module.exports = onoffFNs;
 
 process.on("SIGINT", (_) => {
   printerIO.unexport();

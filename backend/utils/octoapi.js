@@ -1,10 +1,9 @@
 const foo = require("./onoff");
 const axios = require("axios");
-const main = require("../zigberry");
 const short = require("short-uuid");
 var latestEUUID = "";
 
-const fns = {
+const octoapiFNs = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
     if (!current.data.current.port) {
@@ -84,31 +83,24 @@ const fns = {
     console.log(uid);
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
     if (res) {
-      console.log("1");
       if (
         (res.data.state?.flags.ready && !res.data.state?.flags.printing) ||
         res?.status == 409
       ) {
-        console.log("2");
         setTimeout(async () => {
-          console.log("3");
           if (uid == latestEUUID) {
-            console.log("4");
             var state = await api("/api/printer?exclude=temperature,sd", "GET");
             if (state) {
-              console.log("5");
-
               if (
                 (res.data.state?.flags.ready &&
                   !res.data.state?.flags.printing) ||
                 res?.status == 409
               ) {
-                console.log("6");
-                var succ = foo.setPrinter(0);
+                foo.setPrinter(0);
               }
             }
           }
-        }, 3 * 60 * 1000);
+        }, 1 * 60 * 1000);
       }
     }
   },
@@ -116,7 +108,7 @@ const fns = {
     latestEUUID = short.generate();
   },
 };
-module.exports = fns;
+module.exports = octoapiFNs;
 
 fns.autoOff();
 

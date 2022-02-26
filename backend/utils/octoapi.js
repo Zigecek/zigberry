@@ -83,17 +83,24 @@ const fns = {
 
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
     if (res) {
-      if (res.state.flags.ready && !res.state.flags.printing) {
-        setTimeout(async () => {
-          if (uid == latestEUUID) {
-            var state = await api("/api/printer?exclude=temperature,sd", "GET");
-            if (state) {
-              if (state.state.flags.ready && !res.state.flags.printing) {
-                var succ = foo.setPrinter(0);
+      if (res.flags) {
+        if (res.state.flags.ready && !res.state.flags.printing) {
+          setTimeout(async () => {
+            if (uid == latestEUUID) {
+              var state = await api(
+                "/api/printer?exclude=temperature,sd",
+                "GET"
+              );
+              if (state) {
+                if (state.flags) {
+                  if (state.state.flags.ready && !res.state.flags.printing) {
+                    var succ = foo.setPrinter(0);
+                  }
+                }
               }
             }
-          }
-        }, 20 * 60 * 60);
+          }, 20 * 60 * 60);
+        }
       }
     }
   },

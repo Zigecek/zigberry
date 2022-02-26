@@ -86,31 +86,29 @@ const fns = {
     console.log(res);
     if (res) {
       console.log("1");
-      if (res.flags) {
+      if (
+        (res.state?.flags.ready && !res.state?.flags.printing) ||
+        res?.status == 409
+      ) {
         console.log("2");
-        if (res.state.flags.ready && !res.state.flags.printing) {
+        setTimeout(async () => {
           console.log("3");
-          setTimeout(async () => {
+          if (uid == latestEUUID) {
             console.log("4");
-            if (uid == latestEUUID) {
+            var state = await api("/api/printer?exclude=temperature,sd", "GET");
+            if (state) {
               console.log("5");
-              var state = await api(
-                "/api/printer?exclude=temperature,sd",
-                "GET"
-              );
-              if (state) {
+
+              if (
+                (res.state?.flags.ready && !res.state?.flags.printing) ||
+                res?.status == 409
+              ) {
                 console.log("6");
-                if (state.flags) {
-                  console.log("7");
-                  if (state.state.flags.ready && !res.state.flags.printing) {
-                    console.log("8");
-                    var succ = foo.setPrinter(0);
-                  }
-                }
+                var succ = foo.setPrinter(0);
               }
             }
-          }, 3 * 60 * 60 * 1000);
-        }
+          }
+        }, 3 * 60 * 60 * 1000);
       }
     }
   },

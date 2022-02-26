@@ -18,7 +18,7 @@ module.exports = {
     args.splice(0, 2);
     console.log(args);
     var rawPL = args[0];
-    rawPL.replace(/'/g, '"');
+    rawPL = rawPL.replace(/'/g, '"');
     console.log(rawPL);
     var payload = JSON.parse(rawPL);
     console.log(payload);

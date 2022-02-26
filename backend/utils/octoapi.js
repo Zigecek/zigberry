@@ -83,7 +83,6 @@ const fns = {
 
     console.log(uid);
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
-    console.log(res);
     if (res) {
       console.log("1");
       if (

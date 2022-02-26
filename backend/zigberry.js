@@ -156,7 +156,7 @@ app.post("/use", auth, function useFn(req, res) {
                 conRes?.status ? conRes.status : res
               })`
             );
-          }, 1000);
+          }, 3000);
         } else if (error || errout) {
           console.error(error, errout);
           res.status(201).send("Při restartu USB došlo k chybě.");

@@ -81,19 +81,28 @@ const fns = {
     const uid = short.generate();
     latestEUUID = uid;
 
+    console.log(uid);
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
     if (res) {
+      console.log("1");
       if (res.flags) {
+        console.log("2");
         if (res.state.flags.ready && !res.state.flags.printing) {
+          console.log("3");
           setTimeout(async () => {
+            console.log("4");
             if (uid == latestEUUID) {
+              console.log("5");
               var state = await api(
                 "/api/printer?exclude=temperature,sd",
                 "GET"
               );
               if (state) {
+                console.log("6");
                 if (state.flags) {
+                  console.log("7");
                   if (state.state.flags.ready && !res.state.flags.printing) {
+                    console.log("8");
                     var succ = foo.setPrinter(0);
                   }
                 }

@@ -83,11 +83,10 @@ const fns = {
 
     console.log(uid);
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
-    console.log(res.statusCode ? 409 : res);
     if (res) {
       console.log("1");
       if (
-        (res.state?.flags.ready && !res.state?.flags.printing) ||
+        (res.data.state?.flags.ready && !res.data.state?.flags.printing) ||
         res?.status == 409
       ) {
         console.log("2");
@@ -100,7 +99,8 @@ const fns = {
               console.log("5");
 
               if (
-                (res.state?.flags.ready && !res.state?.flags.printing) ||
+                (res.data.state?.flags.ready &&
+                  !res.data.state?.flags.printing) ||
                 res?.status == 409
               ) {
                 console.log("6");

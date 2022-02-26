@@ -3,7 +3,7 @@ const axios = require("axios");
 const short = require("short-uuid");
 var latestEUUID = "";
 
-const octoapioctoapiFNs = {
+const octoapiFNs = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
     if (!current.data.current.port) {
@@ -108,7 +108,7 @@ const octoapioctoapiFNs = {
     latestEUUID = short.generate();
   },
 };
-module.exports = octoapioctoapiFNs;
+module.exports = octoapiFNs;
 
 octoapiFNs.autoOff();
 

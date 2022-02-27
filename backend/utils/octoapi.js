@@ -1,6 +1,8 @@
 const foo = require("./onoff");
 const axios = require("axios");
 const short = require("short-uuid");
+const MjpegDecoder = require("mjpeg-decoder");
+const { imgbox } = require("imgbox");
 var latestEUUID = "";
 
 const octoapiFNs = {
@@ -36,7 +38,7 @@ const octoapiFNs = {
           url: "/toAdmin",
           baseURL: "http://localhost:3321",
           data: {
-            state: eventName,
+            event: eventName,
             data: {
               file: payload.name,
             },
@@ -44,17 +46,30 @@ const octoapiFNs = {
         });
       case "PrintDone":
         octoapiFNs.autoOff();
-        var image = await getImage();
-        var base64 = image ? Buffer.from(image, "base64") : undefined;
+        const decoder = MjpegDecoder.decoderForSnapshot(
+          "https://octo.kozohorsky.xyz/webcam0/?action=stream"
+        );
+        const frame = await decoder.takeSnapshot();
+        var url =
+          "https://www.solidbackgrounds.com/images/1280x720/1280x720-smoky-black-solid-color-background.jpg";
+        try {
+          var img = await imgbox(frame);
+          if (img.ok) {
+            url = img.files[0].original_url;
+          }
+        } catch (err) {
+          console.error(err);
+        }
+
         axios({
           method: "post",
           url: "/toAdmin",
           baseURL: "http://localhost:3321",
           data: {
-            state: eventName,
+            event: eventName,
             data: {
               file: payload.name,
-              image: base64,
+              image: url,
               time: payload.time,
             },
           },
@@ -66,7 +81,7 @@ const octoapiFNs = {
           url: "/toAdmin",
           baseURL: "http://localhost:3321",
           data: {
-            state: eventName,
+            event: eventName,
             data: {
               file: payload.name,
               cancelled: payload.reason == "cancelled",
@@ -132,19 +147,4 @@ async function api(path, type, data) {
       return err.response;
     });
   return ret;
-}
-
-async function getImage() {
-  axios({
-    url: "https://octo.kozohorsky.xyz/webcam0/?action=snapshot",
-    method: "GET",
-    responseType: "arraybuffer",
-  })
-    .then((res) => {
-      return res;
-    })
-    .catch((err) => {
-      console.log(err);
-      return undefined;
-    });
 }

@@ -106,6 +106,7 @@ const octoapiFNs = {
   },
   newUUID: () => {
     latestEUUID = short.generate();
+    console.log(latestEUUID);
   },
 };
 module.exports = octoapiFNs;

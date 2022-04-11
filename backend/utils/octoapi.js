@@ -33,7 +33,6 @@ const octoapiFNs = {
 
       case "PrintStarted":
         octoapiFNs.newUUID();
-        console.log('asfaf');
         axios({
           method: "post",
           url: "/toAdmin",
@@ -45,6 +44,7 @@ const octoapiFNs = {
             },
           },
         });
+        break;
       case "PrintDone":
         octoapiFNs.autoOff();
         const decoder = MjpegDecoder.decoderForSnapshot(
@@ -62,8 +62,6 @@ const octoapiFNs = {
           console.error(err);
         }
 
-        console.log('debuggg')
-
         axios({
           method: "post",
           url: "/toAdmin",
@@ -77,6 +75,7 @@ const octoapiFNs = {
             },
           },
         });
+        break;
       case "PrintFailed":
         octoapiFNs.autoOff();
         axios({

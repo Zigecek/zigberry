@@ -33,6 +33,7 @@ const octoapiFNs = {
 
       case "PrintStarted":
         octoapiFNs.newUUID();
+        console.log('asfaf');
         axios({
           method: "post",
           url: "/toAdmin",
@@ -60,6 +61,8 @@ const octoapiFNs = {
         } catch (err) {
           console.error(err);
         }
+
+        console.log('debuggg')
 
         axios({
           method: "post",

@@ -173,8 +173,6 @@ app.post("/use", auth, function useFn(req, res) {
         }
       );
       break;
-    default:
-      break;
   }
 });
 

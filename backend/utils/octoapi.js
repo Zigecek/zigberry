@@ -8,7 +8,7 @@ var latestEUUID = "";
 const octoapiFNs = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
-    if (!current.data.current.port) {
+    if (!current?.data?.current.port) {
       var res = await api("/api/connection", "POST", {
         command: "connect",
       });

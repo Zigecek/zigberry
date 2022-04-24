@@ -136,22 +136,28 @@ app.post("/use", auth, function useFn(req, res) {
       }
       break;
     case "restartWebcamDaemon":
-      sudo.exec(["sudo", "/home/pi/cc/webcamd.sh"], (error, pid, out) => {
-        if (out) {
-          res.status(200).send("Kamery byly úspěšně restartovány.");
-        } else if (error) {
-          console.error(error);
-          res.status(201).send("Při restartu kamer došlo k chybě.");
-        } else {
-          res.status(201).send("Spojení vypršelo.");
+      sudo.exec(
+        ["sudo", "/home/pi/cc/webcamd.sh"],
+        { check: false, withResult: false },
+        (error, pid, out) => {
+          console.log(error, pid, out);
+          if (out) {
+            res.status(200).send("Kamery byly úspěšně restartovány.");
+          } else if (error) {
+            console.error(error);
+            res.status(201).send("Při restartu kamer došlo k chybě.");
+          } else {
+            res.status(201).send("Spojení vypršelo.");
+          }
         }
-      });
+      );
       break;
     case "restartUSB":
       sudo.exec(
         ["sudo", "/home/pi/cc/restart.sh"],
         { check: false, withResult: false },
         (error, pid, out) => {
+          console.log(error, pid, out);
           if (out) {
             setTimeout(async () => {
               const conRes = await octo.connect();

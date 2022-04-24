@@ -176,6 +176,7 @@ async function api(path, type, data) {
       return res;
     })
     .catch((err) => {
+      console.error(err);
       return err.response;
     });
   return ret;

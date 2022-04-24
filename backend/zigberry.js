@@ -141,13 +141,11 @@ app.post("/use", auth, function useFn(req, res) {
         { check: false, withResult: false },
         (error, pid, out) => {
           console.log(error, pid, out);
-          if (out) {
+          if (!error) {
             res.status(200).send("Kamery byly úspěšně restartovány.");
-          } else if (error) {
+          } else {
             console.error(error);
             res.status(201).send("Při restartu kamer došlo k chybě.");
-          } else {
-            res.status(201).send("Spojení vypršelo.");
           }
         }
       );
@@ -158,7 +156,7 @@ app.post("/use", auth, function useFn(req, res) {
         { check: false, withResult: false },
         (error, pid, out) => {
           console.log(error, pid, out);
-          if (out) {
+          if (!error) {
             setTimeout(async () => {
               const conRes = await octo.connect();
 
@@ -168,11 +166,9 @@ app.post("/use", auth, function useFn(req, res) {
                 })`
               );
             }, 3000);
-          } else if (error) {
+          } else {
             console.error(error);
             res.status(201).send("Při restartu USB došlo k chybě.");
-          } else {
-            res.status(201).send("Spojení vypršelo.");
           }
         }
       );

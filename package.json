@@ -1,10 +1,10 @@
 {
   "name": "zigberry",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "main": "backend/zigberry.js",
   "scripts": {
-    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest axios@latest short-uuid@latest path@latest mjpeg-decoder@latest imgbox@latest",
-    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session axios short-uuid path mjpeg-decoder imgbox",
+    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest axios@latest short-uuid@latest path@latest mjpeg-decoder@latest imgbox@latest sudo-js@latest",
+    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session axios short-uuid path mjpeg-decoder imgbox sudo-js",
     "start": "pm2 start ./backend/zigberry.js --time",
     "start2": "node backend/zigberry.js"
   },
@@ -13,24 +13,7 @@
     "url": "git+https://github.com/Zigecek/zigberry.git"
   },
   "author": "Jan Kozohorský (https://kozohorsky.xyz/)",
-  "dependencies": {
-    "axios": "^0.26.0",
-    "body-parser": "^1.19.1",
-    "child_process": "^1.0.2",
-    "connect-mongodb-session": "^3.1.1",
-    "dotenv": "^12.0.4",
-    "express": "^4.17.2",
-    "express-session": "^1.17.2",
-    "find-config": "^1.0.0",
-    "http": "^0.0.1-security",
-    "mjpeg-decoder": "latest",
-    "mongoose": "^5.13.7",
-    "onoff": "^6.0.3",
-    "parse-json": "latest",
-    "path": "latest",
-    "serve-static": "^1.14.2",
-    "short-uuid": "latest"
-  },
+  "dependencies": {},
   "eslintConfig": {
     "parserOptions": {
       "ecmaVersion": 2021

@@ -47,10 +47,9 @@ const octoapiFNs = {
         break;
       case "PrintDone":
         octoapiFNs.autoOff();
-        const decoder = MjpegDecoder.decoderForSnapshot(
+        const frame = await MjpegDecoder.decoderForSnapshot(
           "https://octo.kozohorsky.xyz/webcam0/?action=stream"
-        );
-        const frame = await decoder.takeSnapshot();
+        ).takeSnapshot();
         var url =
           "https://www.solidbackgrounds.com/images/1280x720/1280x720-smoky-black-solid-color-background.jpg";
         try {
@@ -91,6 +90,36 @@ const octoapiFNs = {
           },
         });
         break;
+      case "PrintCancelled":
+        octoapiFNs.autoOff();
+        axios({
+          method: "post",
+          url: "/toAdmin",
+          baseURL: "http://localhost:3321",
+          data: {
+            event: eventName,
+            data: {
+              file: payload.name,
+              cancelled: true,
+            },
+          },
+        });
+        break;
+      case "PrintCancelling":
+        octoapiFNs.autoOff();
+        axios({
+          method: "post",
+          url: "/toAdmin",
+          baseURL: "http://localhost:3321",
+          data: {
+            event: eventName,
+            data: {
+              file: payload.name,
+              cancelled: true,
+            },
+          },
+        });
+        break;
     }
   },
   autoOff: async () => {
@@ -98,6 +127,7 @@ const octoapiFNs = {
     latestEUUID = uid;
 
     console.log(uid);
+
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
     if (res) {
       if (
@@ -117,7 +147,7 @@ const octoapiFNs = {
               }
             }
           }
-        }, 40 * 60 * 1000);
+        }, 20 * 60 * 1000);
       }
     }
   },

@@ -14,6 +14,8 @@ const foo = require("./utils/onoff");
 const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
 const octo = require("./utils/octoapi");
+var sudo = require("sudo-js");
+sudo.setPassword(process.env.SUDOPSWD);
 
 var store = new MongoDBStore({
   uri: process.env.MONGOOSE_KEY,
@@ -134,11 +136,11 @@ app.post("/use", auth, function useFn(req, res) {
       }
       break;
     case "restartWebcamDaemon":
-      exec("sudo /home/pi/cc/webcamd.sh", (error, out, errout) => {
+      sudo.exec(["sudo", "/home/pi/cc/webcamd.sh"], (error, pid, out) => {
         if (out) {
           res.status(200).send("Kamery byly úspěšně restartovány.");
-        } else if (error || errout) {
-          console.error(error, errout);
+        } else if (error) {
+          console.error(error);
           res.status(201).send("Při restartu kamer došlo k chybě.");
         } else {
           res.status(201).send("Spojení vypršelo.");
@@ -146,24 +148,28 @@ app.post("/use", auth, function useFn(req, res) {
       });
       break;
     case "restartUSB":
-      exec("sudo /home/pi/cc/restart.sh", (error, out, errout) => {
-        if (out) {
-          setTimeout(async () => {
-            const conRes = await octo.connect();
+      sudo.exec(
+        ["sudo", "/home/pi/cc/restart.sh"],
+        { check: false, withResult: false },
+        (error, pid, out) => {
+          if (out) {
+            setTimeout(async () => {
+              const conRes = await octo.connect();
 
-            res.send(
-              `USB zařízení se úspěšně aktualizovala. (${
-                conRes?.status ? conRes.status : res
-              })`
-            );
-          }, 3000);
-        } else if (error || errout) {
-          console.error(error, errout);
-          res.status(201).send("Při restartu USB došlo k chybě.");
-        } else {
-          res.status(201).send("Spojení vypršelo.");
+              res.send(
+                `USB zařízení se úspěšně aktualizovala. (${
+                  conRes?.status ? conRes.status : res
+                })`
+              );
+            }, 3000);
+          } else if (error) {
+            console.error(error);
+            res.status(201).send("Při restartu USB došlo k chybě.");
+          } else {
+            res.status(201).send("Spojení vypršelo.");
+          }
         }
-      });
+      );
       break;
     default:
       break;

@@ -3,12 +3,11 @@ const path = require("path");
 require("dotenv").config({
   path: path.join(__dirname, "..", "..", ".env"),
 });
-const { parse } = require("flatted");
 var args = process.argv;
 args.splice(0, 2);
 var rawPL = args[0];
 rawPL = rawPL.replace(/'/g, '"');
-var payload = parse(rawPL);
+var payload = JSON.parse(rawPL);
 var eventName = args[1];
 
 axios({

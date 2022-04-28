@@ -1,10 +1,10 @@
 {
   "name": "zigberry",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "main": "backend/zigberry.js",
   "scripts": {
-    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest axios@latest short-uuid@latest path@latest mjpeg-decoder@latest imgbox@latest sudo-js@latest flatted@latest",
-    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session axios short-uuid path mjpeg-decoder imgbox sudo-js flatted",
+    "i": "npm i body-parser@latest child_process@latest dotenv@latest express@latest express-session@latest find-config@latest http@latest mongoose@5.13.7 serve-static@latest onoff@latest connect-mongodb-session@latest axios@latest short-uuid@latest path@latest mjpeg-decoder@latest imgbox@latest sudo-js@latest",
+    "uni": "npm uninstall body-parser child_process dotenv express express-session find-config http mongoose serve-static onoff connect-mongodb-session axios short-uuid path mjpeg-decoder imgbox sudo-js",
     "start": "pm2 start ./backend/zigberry.js --time",
     "start2": "node backend/zigberry.js"
   },

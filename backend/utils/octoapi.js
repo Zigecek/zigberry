@@ -22,17 +22,12 @@ const octoapiFNs = {
 
     switch (eventName) {
       case "Connected":
-      case "FileAdded":
-      case "FileRemoved":
-      case "UpdatedFiles":
-      case "FileSelected":
-      case "TransferStarted":
       case "PrintStateChanged":
-        octoapiFNs.autoOff();
+        octoapiFNs.autoOff(eventName);
         break;
 
       case "PrintStarted":
-        octoapiFNs.newUUID();
+        octoapiFNs.newUUID(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -46,7 +41,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintDone":
-        octoapiFNs.autoOff();
+        octoapiFNs.autoOff(eventName);
         const frame = await MjpegDecoder.decoderForSnapshot(
           "https://octo.kozohorsky.xyz/webcam0/?action=stream"
         ).takeSnapshot();
@@ -76,7 +71,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintFailed":
-        octoapiFNs.autoOff();
+        octoapiFNs.autoOff(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -91,7 +86,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintCancelled":
-        octoapiFNs.autoOff();
+        octoapiFNs.autoOff(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -122,11 +117,11 @@ const octoapiFNs = {
         break;
     }
   },
-  autoOff: async () => {
+  autoOff: async (ename) => {
     const uid = short.generate();
     latestEUUID = uid;
 
-    console.log(uid);
+    console.log("autooff start", ename, uid);
 
     var res = await api("/api/printer?exclude=temperature,sd", "GET");
     if (res) {
@@ -134,26 +129,29 @@ const octoapiFNs = {
         (res.data.state?.flags.ready && !res.data.state?.flags.printing) ||
         res?.status == 409
       ) {
+        console.log("autooff init");
         setTimeout(async () => {
           if (uid == latestEUUID) {
             var state = await api("/api/printer?exclude=temperature,sd", "GET");
             if (state) {
+              console.log("autooff finalcheck");
               if (
                 (res.data.state?.flags.ready &&
                   !res.data.state?.flags.printing) ||
                 res?.status == 409
               ) {
+                console.log("autooff POWEROFF", ename)
                 foo.setPrinter(0);
               }
             }
           }
-        }, 20 * 60 * 1000);
+        }, 30 * 60 * 1000);
       }
     }
   },
-  newUUID: () => {
+  newUUID: (ename) => {
     latestEUUID = short.generate();
-    console.log(latestEUUID);
+    console.log(ename, latestEUUID);
   },
 };
 module.exports = octoapiFNs;
@@ -176,7 +174,7 @@ async function api(path, type, data) {
       return res;
     })
     .catch((err) => {
-      console.error(err);
+      console.error(err.response);
       return err.response;
     });
   return ret;

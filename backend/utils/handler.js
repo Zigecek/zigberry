@@ -7,9 +7,7 @@ const { parse } = require("flatted");
 var args = process.argv;
 args.splice(0, 2);
 var rawPL = args[0];
-console.log(rawPL);
-//rawPL = rawPL.replace(/'/g, '"');
-console.log(rawPL);
+rawPL = rawPL.replace(/'/g, '"');
 var payload = parse(rawPL);
 var eventName = args[1];
 

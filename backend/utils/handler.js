@@ -8,7 +8,7 @@ var args = process.argv;
 args.splice(0, 2);
 var rawPL = args[0];
 console.log(rawPL);
-rawPL = rawPL.replace(/'/g, '"');
+//rawPL = rawPL.replace(/'/g, '"');
 console.log(rawPL);
 var payload = parse(rawPL);
 var eventName = args[1];

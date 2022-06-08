@@ -137,7 +137,7 @@ app.post("/use", auth, function useFn(req, res) {
       break;
     case "restartWebcamDaemon":
       sudo.exec(
-        ["sudo", "/home/pi/cc/webcamd.sh"],
+        ["sudo", "/home/" + config.user + "/cc/webcamd.sh"],
         { check: false, withResult: false },
         (error, pid, out) => {
           console.log(error, pid, out);
@@ -152,7 +152,7 @@ app.post("/use", auth, function useFn(req, res) {
       break;
     case "restartUSB":
       sudo.exec(
-        ["sudo", "/home/pi/cc/restart.sh"],
+        ["sudo", "/home/" + config.user + "/cc/restart.sh"],
         { check: false, withResult: false },
         (error, pid, out) => {
           console.log(error, pid, out);

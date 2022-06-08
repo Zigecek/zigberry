@@ -170,7 +170,7 @@
         }, time);
       }
 
-      function updatePrinter() {
+      const updatePrinter = () => {
         use("getPrinter", "").then((data, sucess, jqXHR) => {
           if (jqXHR.status == 200) {
             if (Number(data) == 0) {
@@ -183,6 +183,8 @@
           }
         });
       }
+
+      updatePrinter();
 
       document.addEventListener("visibilitychange", function () {
         if (document.visibilityState === "visible") {

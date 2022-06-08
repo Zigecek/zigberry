@@ -15,6 +15,7 @@ const { exec } = require("child_process");
 var MongoDBStore = require("connect-mongodb-session")(session);
 const octo = require("./utils/octoapi");
 var sudo = require("sudo-js");
+const config = require("./config");
 sudo.setPassword(process.env.SUDOPSWD);
 
 var store = new MongoDBStore({
@@ -22,9 +23,8 @@ var store = new MongoDBStore({
   collection: "sessions",
 });
 
-const port = 3388;
 const httpServer = createServer(app);
-httpServer.listen(port);
+httpServer.listen(config.port);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -39,7 +39,7 @@ app.use(
     resave: true,
     saveUninitialized: true,
     cookie: {
-      maxAge: 1000 * 60 * 60 * 24 * 3, // 3 days
+      maxAge: config.cookieLifetime, // 3 days
     },
     store: store,
   })
@@ -194,4 +194,4 @@ app.get("/get");
 
 app.use(serveStatic("./frontend/"));
 
-console.log("Zigberry - " + port);
+console.log("Zigberry - " + config.port);

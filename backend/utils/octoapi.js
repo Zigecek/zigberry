@@ -4,11 +4,12 @@ const short = require("short-uuid");
 const MjpegDecoder = require("mjpeg-decoder");
 const { imgbox } = require("imgbox");
 var latestEUUID = "";
+const config = require("../config");
 
 const octoapiFNs = {
   connect: async () => {
     var current = await api("/api/connection", "GET");
-    if (!current?.data?.current.port) {
+    if (!current?.data?.current?.port) {
       var res = await api("/api/connection", "POST", {
         command: "connect",
       });
@@ -43,7 +44,7 @@ const octoapiFNs = {
       case "PrintDone":
         octoapiFNs.autoOff(eventName);
         const frame = await MjpegDecoder.decoderForSnapshot(
-          "https://octo.kozohorsky.xyz/webcam0/?action=stream"
+          config.apiPath + config.webcamPath
         ).takeSnapshot();
         var url =
           "https://www.solidbackgrounds.com/images/1280x720/1280x720-smoky-black-solid-color-background.jpg";
@@ -140,12 +141,12 @@ const octoapiFNs = {
                   !res.data.state?.flags.printing) ||
                 res?.status == 409
               ) {
-                console.log("autooff POWEROFF", ename)
+                console.log("autooff POWEROFF", ename);
                 foo.setPrinter(0);
               }
             }
           }
-        }, 30 * 60 * 1000);
+        }, config.autoOffDelay);
       }
     }
   },
@@ -161,7 +162,7 @@ octoapiFNs.autoOff();
 async function api(path, type, data) {
   var ret = axios({
     url: path,
-    baseURL: "https://octo.kozohorsky.xyz/",
+    baseURL: config.apiPath,
     method: type,
     responseType: "json",
     params: type == "GET" ? data : undefined,

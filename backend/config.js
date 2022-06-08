@@ -1,4 +1,4 @@
-module.export = {
+module.exports = {
   autoOffDelay: 30 * 60 * 1000, // 30 mins
   apiPath: "https://octo.kozohorsky.xyz",
   webcamPath: "/webcam/?action=stream",

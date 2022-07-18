@@ -5,8 +5,26 @@ const MjpegDecoder = require("mjpeg-decoder");
 const { imgbox } = require("imgbox");
 var latestEUUID = "";
 const config = require("../config");
+var timeoutIn = null;
 
 const octoapiFNs = {
+  setTimeoutDelay: (delay) => {
+    timeoutIn = Date.now() + delay;
+  },
+  initSocket: () => {
+    setInterval(() => {
+      if (timeoutIn == null) {
+        var timeout = null;
+      } else {
+        var timeout = timeoutIn - Date.now();
+        if (!(timeout > 0)) {
+          timeout = null;
+        }
+      }
+
+      io.emit("timeout", timeout);
+    }, 1000);
+  },
   connect: async () => {
     var current = await api("/api/connection", "GET");
     if (!current?.data?.current?.port) {
@@ -24,11 +42,11 @@ const octoapiFNs = {
     switch (eventName) {
       case "Connected":
       case "PrintStateChanged":
-        octoapiFNs.autoOff(eventName);
+        this.autoOff(eventName);
         break;
 
       case "PrintStarted":
-        octoapiFNs.newUUID(eventName);
+        this.newUUID(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -42,7 +60,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintDone":
-        octoapiFNs.autoOff(eventName);
+        this.autoOff(eventName);
         const frame = await MjpegDecoder.decoderForSnapshot(
           config.apiPath + config.webcamPath
         ).takeSnapshot();
@@ -72,7 +90,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintFailed":
-        octoapiFNs.autoOff(eventName);
+        this.autoOff(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -87,7 +105,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintCancelled":
-        octoapiFNs.autoOff(eventName);
+        this.autoOff(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -102,7 +120,7 @@ const octoapiFNs = {
         });
         break;
       case "PrintCancelling":
-        octoapiFNs.autoOff();
+        this.autoOff(eventName);
         axios({
           method: "post",
           url: "/toAdmin",
@@ -147,6 +165,7 @@ const octoapiFNs = {
             }
           }
         }, config.autoOffDelay);
+        this.setTimeoutDelay(config.autoOffDelay);
       }
     }
   },

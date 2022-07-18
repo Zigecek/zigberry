@@ -1,5 +1,5 @@
 module.exports = {
-  autoOffDelay: 30 * 60 * 1000, // 30 mins
+  autoOffDelay: 20 * 60 * 1000, // 20 mins
   apiPath: "https://octo.kozohorsky.xyz",
   webcamPath: "/webcam/?action=stream",
   port: 3388,

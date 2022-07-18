@@ -16,6 +16,7 @@ var MongoDBStore = require("connect-mongodb-session")(session);
 const octo = require("./utils/octoapi");
 var sudo = require("sudo-js");
 const config = require("./config");
+const socketIo = require("socket.io");
 sudo.setPassword(process.env.SUDOPSWD);
 
 var store = new MongoDBStore({
@@ -25,6 +26,20 @@ var store = new MongoDBStore({
 
 const httpServer = createServer(app);
 httpServer.listen(config.port);
+
+const io = new socketIo.Server(httpServer, {
+  cors: {
+    origin: [
+      "https://kozohorsky.xyz",
+      "https://octo.kozohorsky.xyz",
+      "https://dash.kozohorsky.xyz",
+      "https://kozohorsky-xyz.herokuapp.com",
+    ],
+    methods: ["GET", "POST"],
+  },
+});
+
+octo.initSocket(io);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
@@ -195,3 +210,4 @@ app.get("/get");
 app.use(serveStatic("./frontend/"));
 
 console.log("Zigberry - " + config.port);
+

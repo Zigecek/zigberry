@@ -8,10 +8,10 @@ const config = require("../config");
 var timeoutIn = null;
 
 const octoapiFNs = {
-  setTimeoutDelay: (delay) => {
+  setTimeoutDelay(delay) {
     timeoutIn = Date.now() + delay;
   },
-  initSocket: () => {
+  initSocket(io) {
     setInterval(() => {
       if (timeoutIn == null) {
         var timeout = null;
@@ -25,7 +25,7 @@ const octoapiFNs = {
       io.emit("timeout", timeout);
     }, 1000);
   },
-  connect: async () => {
+  connect() {
     var current = await api("/api/connection", "GET");
     if (!current?.data?.current?.port) {
       var res = await api("/api/connection", "POST", {
@@ -36,7 +36,7 @@ const octoapiFNs = {
       return null;
     }
   },
-  event: async (eventName, payload) => {
+  event(eventName, payload) {
     console.log(eventName, payload);
 
     switch (eventName) {
@@ -136,7 +136,7 @@ const octoapiFNs = {
         break;
     }
   },
-  autoOff: async (ename) => {
+  autoOff(ename) {
     const uid = short.generate();
     latestEUUID = uid;
 
@@ -169,7 +169,7 @@ const octoapiFNs = {
       }
     }
   },
-  newUUID: (ename) => {
+  newUUID(ename) {
     latestEUUID = short.generate();
     console.log(ename, latestEUUID);
   },

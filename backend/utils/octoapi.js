@@ -25,7 +25,7 @@ const octoapiFNs = {
       io.emit("timeout", timeout);
     }, 1000);
   },
-  connect() {
+  async connect() {
     var current = await api("/api/connection", "GET");
     if (!current?.data?.current?.port) {
       var res = await api("/api/connection", "POST", {
@@ -36,7 +36,7 @@ const octoapiFNs = {
       return null;
     }
   },
-  event(eventName, payload) {
+  async event(eventName, payload) {
     console.log(eventName, payload);
 
     switch (eventName) {
@@ -136,7 +136,7 @@ const octoapiFNs = {
         break;
     }
   },
-  autoOff(ename) {
+  async autoOff(ename) {
     const uid = short.generate();
     latestEUUID = uid;
 

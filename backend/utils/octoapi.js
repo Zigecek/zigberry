@@ -171,6 +171,7 @@ const octoapiFNs = {
   },
   newUUID(ename) {
     latestEUUID = short.generate();
+    this.setTimeoutDelay(0);
     console.log(ename, latestEUUID);
   },
 };

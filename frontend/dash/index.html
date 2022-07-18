@@ -240,7 +240,11 @@
         }
       });
 
-      setInterval(updatePrinter, 5000);
+      setInterval(() => {
+        if (document.hasFocus()) {
+          updatePrinter();
+        }
+      }, 5000);
 
       function sec2human(seconds) {
         if (

@@ -22,7 +22,7 @@ const octoapiFNs = {
         }
       }
 
-      io.emit("timeout", timeout);
+      io.emit("timeout", Math.floor(timeout / 1000));
     }, 1000);
   },
   async connect() {
